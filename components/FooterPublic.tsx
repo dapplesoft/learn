@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Facebook, Twitter, Linkedin, Youtube, Github, Mail, MessageSquare, PinIcon, Lock } from 'lucide-react';
 import { db, User as UserType } from '@/lib/db';
 
-export default function Footer() {
+export default function FooterPublic() {
   const handleAdminLogin = () => {
     const adminUser: UserType = {
       id: 'admin_root',
@@ -30,7 +30,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gradient-to-r from-[#1376BB] to-[#36C3FF] text-white pt-16 pb-8">
+    <footer className="bg-gradient-to-r from-blue-600 to-blue-400 text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-2">
@@ -82,7 +82,7 @@ export default function Footer() {
           <div className="order-1 md:order-2">
             <button 
               onClick={handleAdminLogin}
-              className="text-yellow-400 hover:text-yellow-300 text-xs transition-colors flex items-center space-x-1 bg-transparent border-none cursor-pointer font-bold"
+              className="text-white/60 hover:text-white text-xs transition-colors flex items-center space-x-1 bg-transparent border-none cursor-pointer font-bold"
             >
               <Lock className="h-3 w-3" />
               <span>admin login</span>

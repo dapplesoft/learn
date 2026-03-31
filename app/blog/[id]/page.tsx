@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { db, BlogPost } from '@/lib/db';
 import { motion } from 'framer-motion';
 import { Calendar, User, ChevronLeft, Share2, Bookmark } from 'lucide-react';
@@ -26,8 +24,6 @@ export default function BlogArticlePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header />
-      
       <main className="flex-grow py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -136,8 +132,6 @@ export default function BlogArticlePage() {
           </motion.article>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

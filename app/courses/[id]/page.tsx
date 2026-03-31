@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { db, Course, User, Enrollment } from '@/lib/db';
 import { motion } from 'framer-motion';
 import { BookOpen, Clock, CheckCircle2, ChevronRight, Play, ArrowLeft, Loader2 } from 'lucide-react';
@@ -58,7 +56,7 @@ export default function CourseDetailsPage() {
     }
 
     if (isEnrolled) {
-      router.push('/dashboard');
+      router.push('/student-dashboard');
       return;
     }
 
@@ -87,17 +85,15 @@ export default function CourseDetailsPage() {
     db.saveEnrollments([...enrollments, newEnrollment]);
 
     setEnrolling(false);
-    router.push('/dashboard');
+    router.push('/student-dashboard');
   };
 
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-white">
-        <Header />
         <div className="flex-grow flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
         </div>
-        <Footer />
       </div>
     );
   }
@@ -105,23 +101,19 @@ export default function CourseDetailsPage() {
   if (!course) {
     return (
       <div className="min-h-screen flex flex-col bg-white">
-        <Header />
         <div className="flex-grow flex flex-col items-center justify-center p-4">
           <h1 className="text-2xl font-bold text-slate-900 mb-4">Course Not Found</h1>
-          <Link href="/courses" className="text-blue-600 hover:underline flex items-center space-x-2">
+          <Link href="/courses" className="text-emerald-600 hover:underline flex items-center space-x-2">
             <ArrowLeft className="h-4 w-4" />
             <span>Back to Courses</span>
           </Link>
         </div>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header />
-      
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative py-16 bg-slate-900 text-white overflow-hidden">
@@ -142,7 +134,7 @@ export default function CourseDetailsPage() {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <span className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full mb-4 inline-block">
+                <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-full mb-4 inline-block">
                   {course.category}
                 </span>
                 <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
@@ -154,15 +146,15 @@ export default function CourseDetailsPage() {
                 
                 <div className="flex flex-wrap gap-6 mb-8">
                   <div className="flex items-center space-x-2 text-slate-300">
-                    <BookOpen className="h-5 w-5 text-blue-400" />
+                    <BookOpen className="h-5 w-5 text-emerald-400" />
                     <span>{course.modulesCount} Modules</span>
                   </div>
                   <div className="flex items-center space-x-2 text-slate-300">
-                    <Clock className="h-5 w-5 text-blue-400" />
+                    <Clock className="h-5 w-5 text-emerald-400" />
                     <span>{course.duration} Total Content</span>
                   </div>
                   <div className="flex items-center space-x-2 text-slate-300">
-                    <Play className="h-5 w-5 text-blue-400" />
+                    <Play className="h-5 w-5 text-emerald-400" />
                     <span>Video Lessons</span>
                   </div>
                 </div>
@@ -171,7 +163,7 @@ export default function CourseDetailsPage() {
                   <button
                     onClick={handleEnrollClick}
                     disabled={enrolling}
-                    className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-lg transition-all shadow-xl shadow-blue-900/40 flex items-center justify-center space-x-2"
+                    className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-lg transition-all shadow-xl shadow-emerald-900/40 flex items-center justify-center space-x-2"
                   >
                     {enrolling ? (
                       <Loader2 className="h-6 w-6 animate-spin" />
@@ -229,7 +221,7 @@ export default function CourseDetailsPage() {
                       <div key={module.id} className="border border-slate-200 rounded-2xl overflow-hidden">
                         <div className="bg-slate-50 p-4 flex items-center justify-between border-b border-slate-200">
                           <div className="flex items-center space-x-3">
-                            <span className="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center font-bold text-sm">
+                            <span className="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center font-bold text-sm">
                               {mIdx + 1}
                             </span>
                             <h3 className="font-bold text-slate-900">{module.title}</h3>
@@ -242,7 +234,7 @@ export default function CourseDetailsPage() {
                           {module.videos.map((video, vIdx) => (
                             <div key={video.id} className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors group">
                               <div className="flex items-center space-x-3">
-                                <Play className="h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                                <Play className="h-4 w-4 text-slate-400 group-hover:text-emerald-500 transition-colors" />
                                 <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">{video.title}</span>
                               </div>
                               <span className="text-xs text-slate-400">{video.duration}m</span>
@@ -286,7 +278,7 @@ export default function CourseDetailsPage() {
                       <button
                         onClick={handleEnrollClick}
                         disabled={enrolling}
-                        className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-lg transition-all text-center block shadow-lg shadow-blue-200 flex items-center justify-center space-x-2"
+                        className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-lg transition-all text-center block shadow-lg shadow-emerald-200 flex items-center justify-center space-x-2"
                       >
                         {enrolling ? (
                           <Loader2 className="h-6 w-6 animate-spin" />
@@ -299,17 +291,17 @@ export default function CourseDetailsPage() {
                     </div>
                   </div>
 
-                  <div className="bg-blue-600 rounded-3xl p-8 text-white relative overflow-hidden">
+                  <div className="bg-emerald-600 rounded-3xl p-8 text-white relative overflow-hidden">
                     <div className="relative z-10">
                       <h3 className="text-xl font-bold mb-4">Need help?</h3>
-                      <p className="text-blue-100 text-sm mb-6">
+                      <p className="text-emerald-100 text-sm mb-6">
                         Have questions about this course? Our support team is here to help you.
                       </p>
-                      <button className="px-6 py-3 bg-white text-blue-600 rounded-xl font-bold text-sm hover:bg-blue-50 transition-all">
+                      <button className="px-6 py-3 bg-white text-emerald-600 rounded-xl font-bold text-sm hover:bg-emerald-50 transition-all">
                         Contact Support
                       </button>
                     </div>
-                    <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-blue-500 rounded-full blur-2xl opacity-50" />
+                    <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-emerald-500 rounded-full blur-2xl opacity-50" />
                   </div>
                 </div>
               </div>
@@ -317,8 +309,6 @@ export default function CourseDetailsPage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }

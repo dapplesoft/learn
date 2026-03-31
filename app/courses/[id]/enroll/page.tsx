@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { db, Course, User, Enrollment, Payment } from '@/lib/db';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -36,7 +34,7 @@ export default function EnrollmentPage() {
         const enrolled = enrollments.some(e => e.userId === currentUser.id && e.courseId === found.id);
         setIsEnrolled(enrolled);
         if (enrolled) {
-          router.push('/dashboard');
+          router.push('/student-dashboard');
         }
       }
     }, 0);
@@ -106,7 +104,7 @@ export default function EnrollmentPage() {
     
     // Delay redirect to show success state
     setTimeout(() => {
-      router.push('/dashboard');
+      router.push('/student-dashboard');
     }, 2000);
   };
 
@@ -124,7 +122,6 @@ export default function EnrollmentPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header />
       <main className="flex-grow bg-slate-50 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -316,7 +313,6 @@ export default function EnrollmentPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

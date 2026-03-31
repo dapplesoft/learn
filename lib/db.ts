@@ -139,7 +139,7 @@ export const CATEGORIES = [
 export const INITIAL_COURSES: Course[] = [
   {
     id: '1',
-    name: 'Mastering C# & .NET Core',
+    name: 'Mastering C# & .NET Core: From Zero to Hero',
     category: 'Programming',
     isPaid: true,
     price: 49.99,
@@ -151,54 +151,94 @@ export const INITIAL_COURSES: Course[] = [
       oneYear: 69.99,
       lifetime: 99.99
     },
-    modulesCount: 3,
-    shortDescription: 'Comprehensive guide to modern C# development.',
+    modulesCount: 12,
+    shortDescription: 'Comprehensive guide to modern C# development including ASP.NET Core.',
     description: 'Learn C# from scratch to advanced topics including LINQ, Async/Await, and ASP.NET Core Web APIs.',
-    image: 'https://picsum.photos/seed/csharp/800/600',
+    image: 'https://picsum.photos/seed/csharp/800/450',
     published: true,
-    duration: '20h',
+    duration: '20h 45m',
     seo: { title: 'C# Masterclass', description: 'Learn C#', keywords: 'c#, .net' },
-    modules: [
-      {
-        id: 'm1',
-        title: 'Introduction to C#',
-        videos: [
-          { id: 'v1', title: 'Getting Started', youtubeUrl: 'https://www.youtube.com/watch?v=GhQdlIFylQ8', duration: '10:00' },
-          { id: 'v2', title: 'Variables & Types', youtubeUrl: 'https://www.youtube.com/watch?v=GhQdlIFylQ8', duration: '15:00' },
-        ]
-      },
-      {
-        id: 'm2',
-        title: 'Object Oriented Programming',
-        videos: [
-          { id: 'v3', title: 'Classes & Objects', youtubeUrl: 'https://www.youtube.com/watch?v=GhQdlIFylQ8', duration: '20:00' },
-        ]
-      }
-    ]
+    modules: []
   },
   {
     id: '2',
-    name: 'Linux for DevOps',
+    name: 'Linux for DevOps: The Complete Command Line Bootcamp',
     category: 'DevOps',
     isPaid: false,
     price: 0,
     pricingType: 'single',
-    modulesCount: 2,
-    shortDescription: 'Master the Linux command line for server management.',
+    modulesCount: 8,
+    shortDescription: 'Master the Linux command line for server management and automation.',
     description: 'Essential Linux skills for developers and DevOps engineers.',
-    image: 'https://picsum.photos/seed/linux/800/600',
+    image: 'https://picsum.photos/seed/linux/800/450',
     published: true,
-    duration: '12h',
+    duration: '12h 30m',
     seo: { title: 'Linux DevOps', description: 'Learn Linux', keywords: 'linux, devops' },
-    modules: [
-      {
-        id: 'm3',
-        title: 'Bash Basics',
-        videos: [
-          { id: 'v4', title: 'The Terminal', youtubeUrl: 'https://www.youtube.com/watch?v=GhQdlIFylQ8', duration: '12:00' },
-        ]
-      }
-    ]
+    modules: []
+  },
+  {
+    id: '3',
+    name: 'React & Next.js 15: Building Modern Full-Stack Apps',
+    category: 'Web Development',
+    isPaid: true,
+    price: 59.99,
+    pricingType: 'single',
+    modulesCount: 15,
+    shortDescription: 'Learn the latest React features and Next.js App Router.',
+    description: 'Master modern web development with React, Next.js, and Tailwind CSS.',
+    image: 'https://picsum.photos/seed/react/800/450',
+    published: true,
+    duration: '25h 15m',
+    seo: { title: 'React Next.js Course', description: 'Learn React', keywords: 'react, nextjs' },
+    modules: []
+  },
+  {
+    id: '4',
+    name: 'Python for Data Science and Machine Learning',
+    category: 'Data Science',
+    isPaid: true,
+    price: 39.99,
+    pricingType: 'single',
+    modulesCount: 10,
+    shortDescription: 'Analyze data and build predictive models with Python.',
+    description: 'Comprehensive Python course for data analysis and machine learning.',
+    image: 'https://picsum.photos/seed/python/800/450',
+    published: true,
+    duration: '18h 20m',
+    seo: { title: 'Python Data Science', description: 'Learn Python', keywords: 'python, data science' },
+    modules: []
+  },
+  {
+    id: '5',
+    name: 'UI/UX Design Principles: Create Stunning Interfaces',
+    category: 'UI/UX Design',
+    isPaid: false,
+    price: 0,
+    pricingType: 'single',
+    modulesCount: 6,
+    shortDescription: 'Learn the fundamentals of user interface and experience design.',
+    description: 'Master Figma and design principles to create beautiful apps.',
+    image: 'https://picsum.photos/seed/design/800/450',
+    published: true,
+    duration: '8h 45m',
+    seo: { title: 'UI/UX Design', description: 'Learn Design', keywords: 'ui, ux, figma' },
+    modules: []
+  },
+  {
+    id: '6',
+    name: 'Cyber Security Fundamentals: Protect Your Digital Life',
+    category: 'Cyber Security',
+    isPaid: true,
+    price: 29.99,
+    pricingType: 'single',
+    modulesCount: 7,
+    shortDescription: 'Essential security practices for the modern web.',
+    description: 'Learn how to secure applications and protect against common threats.',
+    image: 'https://picsum.photos/seed/security/800/450',
+    published: true,
+    duration: '10h 10m',
+    seo: { title: 'Cyber Security', description: 'Learn Security', keywords: 'security, hacking' },
+    modules: []
   }
 ];
 

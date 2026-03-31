@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { db, Course, User, CATEGORIES } from '@/lib/db';
 import { motion } from 'framer-motion';
 import { Search, Filter, Play, Clock, BookOpen, ChevronRight } from 'lucide-react';
@@ -45,7 +43,6 @@ export default function CoursesPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header />
       <main className="flex-grow py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
@@ -149,7 +146,6 @@ export default function CoursesPage() {
           )}
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

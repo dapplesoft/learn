@@ -2,22 +2,29 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Menu, X, Code2, LogIn, User, LayoutDashboard, Settings } from 'lucide-react';
+import { Menu, X, Code2, LogIn, LayoutDashboard, Settings } from 'lucide-react';
 import { db, User as UserType } from '@/lib/db';
 
-export default function Header() {
+export default function HeaderPublic() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<UserType | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setUser(db.getCurrentUser());
+    const timer = setTimeout(() => {
+      setMounted(true);
+      setUser(db.getCurrentUser());
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleLogout = () => {
     db.setCurrentUser(null);
-    window.location.href = '/';
+    setUser(null);
+    router.push('/');
   };
 
   const handleStudentLogin = () => {
@@ -29,7 +36,8 @@ export default function Header() {
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=student`
     };
     db.setCurrentUser(newUser);
-    window.location.href = '/student-dashboard';
+    setUser(newUser);
+    router.push('/student-dashboard');
   };
 
   const navLinks = [
@@ -40,13 +48,13 @@ export default function Header() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <nav className="sticky top-0 z-50 bg-gradient-to-r from-blue-600 to-blue-400 border-b border-white/10 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <Code2 className="h-8 w-8 text-blue-500" />
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent font-mono">
+              <Code2 className="h-8 w-8 text-white" />
+              <span className="text-xl font-bold text-white font-mono">
                 Dapplesoft Learn
               </span>
             </Link>
@@ -59,32 +67,32 @@ export default function Header() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-slate-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="text-blue-50 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   {link.name}
                 </Link>
               ))}
-              {user ? (
+              {mounted && user ? (
                 <div className="flex items-center space-x-4 ml-4">
-                  <button
-                    onClick={handleStudentLogin}
-                    className="flex items-center space-x-1 text-slate-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+                  <Link
+                    href="/student-dashboard"
+                    className="flex items-center space-x-1 text-white hover:text-blue-50 px-3 py-2 rounded-md text-sm font-medium"
                   >
                     <LayoutDashboard className="h-4 w-4" />
-                    <span>Student Login</span>
-                  </button>
+                    <span>Student Dashboard</span>
+                  </Link>
                   {user.role === 'admin' && (
                     <Link
                       href="/admin-dashboard"
-                      className="flex items-center space-x-1 text-amber-600 hover:text-amber-700 px-3 py-2 rounded-md text-sm font-medium"
+                      className="flex items-center space-x-1 text-amber-200 hover:text-amber-100 px-3 py-2 rounded-md text-sm font-medium"
                     >
                       <Settings className="h-4 w-4" />
-                      <span>admin</span>
+                      <span>Admin</span>
                     </Link>
                   )}
                   <button
                     onClick={handleLogout}
-                    className="bg-slate-100 hover:bg-slate-200 text-slate-900 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                    className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all"
                   >
                     Logout
                   </button>
@@ -92,7 +100,7 @@ export default function Header() {
               ) : (
                 <button
                   onClick={handleStudentLogin}
-                  className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white px-6 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all shadow-lg shadow-blue-900/20"
+                  className="bg-white text-blue-600 hover:bg-blue-50 px-6 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all shadow-lg shadow-blue-900/20"
                 >
                   <LogIn className="h-4 w-4" />
                   <span>Student Login</span>
@@ -105,7 +113,7 @@ export default function Header() {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-slate-600 hover:text-blue-600 hover:bg-slate-100 focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-md text-blue-50 hover:text-white hover:bg-white/10 focus:outline-none"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -118,39 +126,40 @@ export default function Header() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="md:hidden bg-white border-b border-slate-200"
+          className="md:hidden bg-blue-600 border-b border-blue-500"
         >
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-slate-600 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
+                className="text-blue-50 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
               </Link>
             ))}
-            {user ? (
+            {mounted && user ? (
               <>
-                <button
-                  onClick={handleStudentLogin}
-                  className="text-slate-600 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium w-full text-left"
+                <Link
+                  href="/student-dashboard"
+                  className="text-white hover:text-blue-50 block px-3 py-2 rounded-md text-base font-medium"
+                  onClick={() => setIsOpen(false)}
                 >
-                  Student Login
-                </button>
+                  Student Dashboard
+                </Link>
                 {user.role === 'admin' && (
                   <Link
                     href="/admin-dashboard"
-                    className="text-amber-600 hover:text-amber-700 block px-3 py-2 rounded-md text-base font-medium"
+                    className="text-amber-200 hover:text-amber-100 block px-3 py-2 rounded-md text-base font-medium"
                     onClick={() => setIsOpen(false)}
                   >
-                    admin
+                    Admin
                   </Link>
                 )}
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left text-slate-600 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
+                  className="w-full text-left text-blue-50 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                 >
                   Logout
                 </button>
@@ -158,7 +167,7 @@ export default function Header() {
             ) : (
               <button
                 onClick={handleStudentLogin}
-                className="w-full text-left bg-blue-600 text-white block px-3 py-2 rounded-md text-base font-medium"
+                className="w-full text-left bg-white text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
               >
                 Student Login
               </button>
