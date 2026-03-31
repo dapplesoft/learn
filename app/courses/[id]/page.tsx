@@ -44,9 +44,17 @@ export default function CourseDetailsPage() {
   }, [params.id]);
 
   const handleEnrollClick = async () => {
-    if (!user) {
-      router.push('/login');
-      return;
+    let currentUser = user;
+    if (!currentUser) {
+      currentUser = {
+        id: `u_${Math.random().toString(36).substr(2, 9)}`,
+        name: 'Student User',
+        email: 'student@example.com',
+        role: 'student',
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=student`
+      };
+      db.setCurrentUser(currentUser);
+      setUser(currentUser);
     }
 
     if (isEnrolled) {
@@ -67,7 +75,7 @@ export default function CourseDetailsPage() {
     const enrollmentId = Math.random().toString(36).substr(2, 9);
     const newEnrollment: Enrollment = {
       id: enrollmentId,
-      userId: user.id,
+      userId: currentUser.id,
       courseId: course!.id,
       enrolledAt: new Date().toISOString(),
       progress: 0,

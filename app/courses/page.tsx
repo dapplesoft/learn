@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { db, Course, User } from '@/lib/db';
+import { db, Course, User, CATEGORIES } from '@/lib/db';
 import { motion } from 'framer-motion';
 import { Search, Filter, Play, Clock, BookOpen, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
@@ -41,7 +41,7 @@ export default function CoursesPage() {
     setFilteredCourses(filtered);
   }, [search, category, type, courses]);
 
-  const categories = ['All', ...new Set(courses.map(c => c.category))];
+  const categories = ['All', ...CATEGORIES];
 
   return (
     <div className="min-h-screen flex flex-col bg-white">

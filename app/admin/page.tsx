@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import Image from 'next/image';
-import { db, Course, BlogPost, Enrollment, Payment, User, Module, Video } from '@/lib/db';
+import { db, Course, BlogPost, Enrollment, Payment, User, Module, Video, CATEGORIES } from '@/lib/db';
 import { cn } from '@/lib/utils';
+import { ImageUpload } from '@/components/ImageUpload';
 import { 
   LayoutDashboard, 
   BookOpen, 
@@ -44,7 +45,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
-export default function AdminDashboard() {
+export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('overview');
   const [courses, setCourses] = useState<Course[]>([]);
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
@@ -52,10 +53,12 @@ export default function AdminDashboard() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [editingCourse, setEditingCourse] = useState<Course | 'new' | null>(null);
+  const [courseImage, setCourseImage] = useState('');
   const [currentPricingType, setCurrentPricingType] = useState<'single' | 'tiered'>('single');
   const [currentIsPaid, setCurrentIsPaid] = useState<boolean>(false);
   const [editingBlog, setEditingBlog] = useState<BlogPost | 'new' | null>(null);
   const [formModules, setFormModules] = useState<Module[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   const addModule = () => {
     const newModule: Module = {
@@ -126,9 +129,15 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const currentUser = db.getCurrentUser();
     if (!currentUser || currentUser.role !== 'admin') {
-      window.location.href = '/login';
+      window.location.href = '/';
       return;
     }
 
@@ -141,7 +150,9 @@ export default function AdminDashboard() {
     }, 0);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) return null;
 
   const stats = [
     { label: 'Total Revenue', value: `$${payments.reduce((acc, p) => acc + p.amount, 0).toFixed(2)}`, icon: DollarSign, color: 'text-green-500' },
@@ -708,13 +719,15 @@ export default function AdminDashboard() {
     if (editingCourse) {
       const isNew = editingCourse === 'new';
       const course = isNew ? null : editingCourse as Course;
+
       return (
         <div className="bg-white border border-slate-200 p-8 rounded-2xl shadow-sm">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{isNew ? 'Create New Course' : 'Edit Course'}</h2>
-            <button onClick={() => { setEditingCourse(null); setCurrentPricingType('single'); setCurrentIsPaid(false); }} className="text-slate-500 hover:text-slate-900 font-medium transition-colors">Cancel</button>
+            <button onClick={() => { setEditingCourse(null); setCurrentPricingType('single'); setCurrentIsPaid(false); setCourseImage(''); }} className="text-slate-500 hover:text-slate-900 font-medium transition-colors">Cancel</button>
           </div>
           <form onSubmit={handleSaveCourse} className="space-y-6">
+            <input type="hidden" name="image" value={courseImage} />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Course Name</label>
@@ -722,11 +735,14 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Category</label>
-                <input name="category" defaultValue={course?.category} required className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" />
+                <select name="category" defaultValue={course?.category || CATEGORIES[0]} required className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all">
+                  {CATEGORIES.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
               </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Image URL</label>
-                <input name="image" defaultValue={course?.image} required className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" />
+              <div className="col-span-full">
+                <ImageUpload value={courseImage} onChange={setCourseImage} />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Is Paid?</label>
@@ -796,6 +812,39 @@ export default function AdminDashboard() {
                   <input type="hidden" name="pricingType" value="single" />
                 </div>
               )}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Published</label>
+                <select name="published" defaultValue={course?.published ? 'true' : 'false'} className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all">
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Short Description</label>
+              <textarea name="shortDescription" defaultValue={course?.shortDescription} required rows={2} className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Full Description</label>
+              <textarea name="description" defaultValue={course?.description} required rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" />
+            </div>
+
+            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900">Course Curriculum</h3>
+                  <p className="text-sm text-slate-500">Add modules and videos to your course</p>
+                </div>
+                <button 
+                  type="button"
+                  onClick={addModule}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 transition-all shadow-md shadow-blue-200"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Add Module</span>
+                </button>
+              </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Published</label>
                 <select name="published" defaultValue={course?.published ? 'true' : 'false'} className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all">
@@ -966,7 +1015,7 @@ export default function AdminDashboard() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Course Management</h2>
-          <button onClick={() => { setEditingCourse('new'); setCurrentPricingType('single'); setCurrentIsPaid(false); setFormModules([]); }} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold flex items-center space-x-2 transition-all shadow-lg shadow-blue-200">
+          <button onClick={() => { setEditingCourse('new'); setCurrentPricingType('single'); setCurrentIsPaid(false); setFormModules([]); setCourseImage(''); }} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold flex items-center space-x-2 transition-all shadow-lg shadow-blue-200">
             <Plus className="h-5 w-5" />
             <span>Create New Course</span>
           </button>
@@ -1003,6 +1052,7 @@ export default function AdminDashboard() {
                   setCurrentPricingType(course.pricingType || 'single'); 
                   setCurrentIsPaid(course.isPaid);
                   setFormModules(course.modules || []);
+                  setCourseImage(course.image || '');
                 }} className="p-2 hover:bg-slate-50 rounded-lg text-slate-400 hover:text-blue-600 transition-all">
                   <Edit className="h-5 w-5" />
                 </button>
@@ -1029,7 +1079,7 @@ export default function AdminDashboard() {
             <div className="bg-blue-600 p-1.5 rounded-lg shadow-lg shadow-blue-200">
               <BookOpen className="h-6 w-6 text-white" />
             </div>
-            <span className="font-bold text-lg tracking-tight text-slate-900">Admin Panel</span>
+            <span className="font-bold text-lg tracking-tight text-slate-900">admin</span>
           </Link>
         </div>
         <nav className="flex-grow p-4 space-y-2">
@@ -1062,7 +1112,7 @@ export default function AdminDashboard() {
             className="w-full flex items-center space-x-3 px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all font-medium"
           >
             <LogOut className="h-5 w-5" />
-            <span>Exit Admin</span>
+            <span>Exit admin</span>
           </button>
         </div>
       </aside>

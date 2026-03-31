@@ -103,7 +103,40 @@ const KEYS = {
 };
 
 // Initial Seed Data
-const INITIAL_COURSES: Course[] = [
+export const CATEGORIES = [
+  'Web Development',
+  'Mobile Development',
+  'Data Science',
+  'Machine Learning',
+  'Artificial Intelligence',
+  'Cloud Computing',
+  'DevOps',
+  'Cyber Security',
+  'Game Development',
+  'UI/UX Design',
+  'Digital Marketing',
+  'Business Analytics',
+  'Blockchain',
+  'Internet of Things',
+  'Embedded Systems',
+  'Software Engineering',
+  'Database Management',
+  'Network Engineering',
+  'Project Management',
+  'Agile & Scrum',
+  'Python Programming',
+  'JavaScript Mastery',
+  'Java Development',
+  'C++ Programming',
+  'PHP & Laravel',
+  'Ruby on Rails',
+  'Swift & iOS',
+  'Kotlin & Android',
+  'React & Next.js',
+  'Angular & Vue'
+];
+
+export const INITIAL_COURSES: Course[] = [
   {
     id: '1',
     name: 'Mastering C# & .NET Core',
@@ -169,7 +202,7 @@ const INITIAL_COURSES: Course[] = [
   }
 ];
 
-const INITIAL_BLOGS: BlogPost[] = [
+export const INITIAL_BLOGS: BlogPost[] = [
   {
     id: '1',
     title: 'The Future of AI in Programming',
@@ -195,7 +228,8 @@ export const db = {
     // Migration: ensure pricingType exists
     return courses.map((c: any) => ({
       ...c,
-      pricingType: c.pricingType || 'single'
+      pricingType: c.pricingType || 'single',
+      image: (c.image === 't' || !c.image) ? 'https://picsum.photos/seed/default/800/600' : c.image
     }));
   },
   saveCourses: (courses: Course[]) => {
@@ -208,7 +242,10 @@ export const db = {
       localStorage.setItem(KEYS.BLOGS, JSON.stringify(INITIAL_BLOGS));
       return INITIAL_BLOGS;
     }
-    return JSON.parse(data);
+    return JSON.parse(data).map((b: any) => ({
+      ...b,
+      image: (b.image === 't' || !b.image) ? 'https://picsum.photos/seed/default/800/600' : b.image
+    }));
   },
   saveBlogs: (blogs: BlogPost[]) => {
     localStorage.setItem(KEYS.BLOGS, JSON.stringify(blogs));

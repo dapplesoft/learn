@@ -22,7 +22,7 @@ export default function StudentDashboard() {
   useEffect(() => {
     const currentUser = db.getCurrentUser();
     if (!currentUser) {
-      router.push('/login');
+      router.push('/');
       return;
     }
     // eslint-disable-next-line react-hooks/set-state-in-effect

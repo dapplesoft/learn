@@ -13,8 +13,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Dapplesoft Learn - Master Programming Skills',
-  description: 'C#, ASP.NET Core, PHP, Linux, DevOps, AI – Free & Paid Courses, Sequential Learning & Progress Tracking',
+  title: 'Dapplesoft - Innovative Software Solutions',
+  description: 'Dapplesoft helps businesses succeed in the digital world with innovative, secure, and user-friendly software.',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

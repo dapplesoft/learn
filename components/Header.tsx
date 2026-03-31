@@ -20,6 +20,18 @@ export default function Header() {
     window.location.href = '/';
   };
 
+  const handleStudentLogin = () => {
+    const newUser: UserType = {
+      id: `u_${Math.random().toString(36).substr(2, 9)}`,
+      name: 'Student User',
+      email: 'student@example.com',
+      role: 'student',
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=student`
+    };
+    db.setCurrentUser(newUser);
+    window.location.href = '/dashboard';
+  };
+
   const navLinks = [
     { name: 'Courses', href: '/courses' },
     { name: 'About', href: '/about' },
@@ -54,20 +66,20 @@ export default function Header() {
               ))}
               {user ? (
                 <div className="flex items-center space-x-4 ml-4">
-                  <Link
-                    href="/dashboard"
+                  <button
+                    onClick={handleStudentLogin}
                     className="flex items-center space-x-1 text-slate-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                   >
                     <LayoutDashboard className="h-4 w-4" />
-                    <span>Dashboard</span>
-                  </Link>
+                    <span>Student Login</span>
+                  </button>
                   {user.role === 'admin' && (
                     <Link
                       href="/admin"
                       className="flex items-center space-x-1 text-amber-600 hover:text-amber-700 px-3 py-2 rounded-md text-sm font-medium"
                     >
                       <Settings className="h-4 w-4" />
-                      <span>Admin</span>
+                      <span>admin</span>
                     </Link>
                   )}
                   <button
@@ -78,13 +90,13 @@ export default function Header() {
                   </button>
                 </div>
               ) : (
-                <Link
-                  href="/login"
+                <button
+                  onClick={handleStudentLogin}
                   className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white px-6 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all shadow-lg shadow-blue-900/20"
                 >
                   <LogIn className="h-4 w-4" />
-                  <span>Sign In</span>
-                </Link>
+                  <span>Student Login</span>
+                </button>
               )}
             </div>
           </div>
@@ -121,20 +133,19 @@ export default function Header() {
             ))}
             {user ? (
               <>
-                <Link
-                  href="/dashboard"
-                  className="text-slate-600 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-                  onClick={() => setIsOpen(false)}
+                <button
+                  onClick={handleStudentLogin}
+                  className="text-slate-600 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium w-full text-left"
                 >
-                  Dashboard
-                </Link>
+                  Student Login
+                </button>
                 {user.role === 'admin' && (
                   <Link
                     href="/admin"
                     className="text-amber-600 hover:text-amber-700 block px-3 py-2 rounded-md text-base font-medium"
                     onClick={() => setIsOpen(false)}
                   >
-                    Admin Panel
+                    admin
                   </Link>
                 )}
                 <button
@@ -145,13 +156,12 @@ export default function Header() {
                 </button>
               </>
             ) : (
-              <Link
-                href="/login"
-                className="bg-blue-600 text-white block px-3 py-2 rounded-md text-base font-medium"
-                onClick={() => setIsOpen(false)}
+              <button
+                onClick={handleStudentLogin}
+                className="w-full text-left bg-blue-600 text-white block px-3 py-2 rounded-md text-base font-medium"
               >
-                Sign In
-              </Link>
+                Student Login
+              </button>
             )}
           </div>
         </motion.div>

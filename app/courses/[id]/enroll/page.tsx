@@ -45,9 +45,18 @@ export default function EnrollmentPage() {
   }, [params.id, router]);
 
   const handleEnroll = async () => {
-    if (!user) {
-      router.push('/login');
-      return;
+    let currentUser = user;
+    if (!currentUser) {
+      currentUser = {
+        // eslint-disable-next-line react-hooks/purity
+        id: `u_${Math.random().toString(36).substr(2, 9)}`,
+        name: 'Student User',
+        email: 'student@example.com',
+        role: 'student',
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=student`
+      };
+      db.setCurrentUser(currentUser);
+      setUser(currentUser);
     }
 
     if (course?.isPaid && !showPayment) {
@@ -63,7 +72,7 @@ export default function EnrollmentPage() {
     const enrollmentId = Math.random().toString(36).substr(2, 9);
     const newEnrollment: Enrollment = {
       id: enrollmentId,
-      userId: user.id,
+      userId: currentUser.id,
       courseId: course!.id,
       enrolledAt: new Date().toISOString(),
       progress: 0,
@@ -80,7 +89,7 @@ export default function EnrollmentPage() {
       const paymentId = Math.random().toString(36).substr(2, 9);
       const newPayment: Payment = {
         id: paymentId,
-        userId: user.id,
+        userId: currentUser.id,
         courseId: course.id,
         amount: parseFloat(planPrice),
         status: 'success',

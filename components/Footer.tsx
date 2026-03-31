@@ -1,8 +1,23 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Facebook, Twitter, Linkedin, Youtube, Github, Mail, MessageSquare, PinIcon, Lock } from 'lucide-react';
+import { db, User as UserType } from '@/lib/db';
 
 export default function Footer() {
+  const handleAdminLogin = () => {
+    const adminUser: UserType = {
+      id: 'admin_root',
+      name: 'System Admin',
+      email: 'admin@dapplesoft.com',
+      role: 'admin',
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=admin`
+    };
+    db.setCurrentUser(adminUser);
+    window.location.href = '/admin';
+  };
+
   const socialLinks = [
     { icon: Facebook, href: 'https://www.facebook.com/dapplesoft/', label: 'Facebook' },
     { icon: Twitter, href: 'https://twitter.com/dapplesoft', label: 'Twitter' },
@@ -65,13 +80,13 @@ export default function Footer() {
             © {new Date().getFullYear()} Dapplesoft. All rights reserved.
           </p>
           <div className="order-1 md:order-2">
-            <Link 
-              href="/login" 
-              className="text-blue-200/50 hover:text-white text-xs transition-colors flex items-center space-x-1"
+            <button 
+              onClick={handleAdminLogin}
+              className="text-yellow-400 hover:text-yellow-300 text-xs transition-colors flex items-center space-x-1 bg-transparent border-none cursor-pointer font-bold"
             >
               <Lock className="h-3 w-3" />
-              <span>Admin Portal</span>
-            </Link>
+              <span>admin login</span>
+            </button>
           </div>
         </div>
       </div>

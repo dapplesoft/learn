@@ -55,8 +55,9 @@ export default function AboutUs() {
                 </p>
               </section>
 
-              <div className="pt-8 border-t border-slate-100 text-sm text-slate-500 italic">
-                Dapplesoft Learn - Empowering Developers
+              <div className="pt-8 border-t border-slate-100 text-sm text-slate-500 italic space-y-1">
+                <p>Dapplesoft Learn - Empowering Developers</p>
+                <p>Founded in 2019 From Joypurhat, Bangladesh</p>
               </div>
             </div>
           </motion.div>

@@ -63,9 +63,9 @@ export default function ContactPage() {
                   <MapPin className="h-6 w-6 text-cyan-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Our Office</h3>
-                  <p className="text-slate-600">123 Tech Avenue, Silicon Valley</p>
-                  <p className="text-slate-500 text-sm">California, USA</p>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Location</h3>
+                  <p className="text-slate-600">464 East Birnagar, Panchbibi</p>
+                  <p className="text-slate-500 text-sm">Joypurhat, Bangladesh</p>
                 </div>
               </div>
 
@@ -74,9 +74,9 @@ export default function ContactPage() {
                   <Phone className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Call Support</h3>
-                  <p className="text-slate-600">+1 (555) 123-4567</p>
-                  <p className="text-slate-500 text-sm">Mon-Fri, 9am - 6pm PST</p>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">WhatsApp Business</h3>
+                  <p className="text-slate-600">+8801324948414</p>
+                  <p className="text-slate-500 text-sm">Founded in 2019 From Joypurhat, Bangladesh</p>
                 </div>
               </div>
             </motion.div>

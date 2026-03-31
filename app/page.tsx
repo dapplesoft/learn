@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { BookOpen, Trophy, ArrowRight, Play, Users, Chrome } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { db, Course, BlogPost } from '@/lib/db';
+import { db, Course, BlogPost, CATEGORIES } from '@/lib/db';
 import { cn } from '@/lib/utils';
 
 export default function LandingPage() {
@@ -21,6 +21,18 @@ export default function LandingPage() {
     }, 0);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleStudentLogin = () => {
+    const newUser: any = {
+      id: `u_${Math.random().toString(36).substr(2, 9)}`,
+      name: 'Student User',
+      email: 'student@example.com',
+      role: 'student',
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=student`
+    };
+    db.setCurrentUser(newUser);
+    window.location.href = '/dashboard';
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -46,11 +58,11 @@ export default function LandingPage() {
                   Code. Learn. Build.
                 </span>
                 <br />
-                <span className="text-slate-900">Master Programming Skills</span>
+                <span className="text-slate-900">Innovative Software Solutions</span>
               </h1>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-10">
-                C#, ASP.NET Core, PHP, Linux, DevOps, AI – Free & Paid Courses, 
-                Sequential Learning & Progress Tracking. Start your journey today.
+                Dapplesoft helps businesses succeed in the digital world with innovative, 
+                secure, and user-friendly software. Founded in 2019.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link
@@ -60,13 +72,13 @@ export default function LandingPage() {
                   <span>Explore Courses</span>
                   <ArrowRight className="h-5 w-5" />
                 </Link>
-                <Link
-                  href="/login"
+                <button
+                  onClick={handleStudentLogin}
                   className="px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 rounded-xl font-bold text-lg transition-all border border-slate-200 flex items-center justify-center space-x-2"
                 >
                   <Chrome className="h-5 w-5 text-blue-500" />
-                  <span>Sign In with Google</span>
-                </Link>
+                  <span>Student Login</span>
+                </button>
               </div>
             </motion.div>
 
@@ -85,7 +97,7 @@ export default function LandingPage() {
                   <br />
                   &nbsp;&nbsp;<span className="text-purple-400">public void</span> <span className="text-yellow-400">Learn</span>() {'{'}
                   <br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;Console.<span className="text-yellow-400">WriteLine</span>(<span className="text-green-400">&quot;Mastering new skills at Dapplesoft Learn!&quot;</span>);
+                  &nbsp;&nbsp;&nbsp;&nbsp;Console.<span className="text-yellow-400">WriteLine</span>(<span className="text-green-400">&quot;Innovating with Dapplesoft!&quot;</span>);
                   <br />
                   &nbsp;&nbsp;{'}'}
                   <br />
@@ -158,6 +170,33 @@ export default function LandingPage() {
                   </div>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Categories Section */}
+        <section className="py-20 bg-white border-t border-slate-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold text-slate-900 mb-4 tracking-tight">Browse by Category</h2>
+              <p className="text-slate-500 max-w-2xl mx-auto font-medium">Explore our wide range of topics and find the perfect course for your career path.</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {CATEGORIES.slice(0, 12).map((cat, i) => (
+                <Link 
+                  key={cat} 
+                  href={`/courses?category=${encodeURIComponent(cat)}`}
+                  className="p-6 bg-slate-50 hover:bg-blue-600 hover:text-white rounded-2xl border border-slate-200 hover:border-blue-500 transition-all text-center group shadow-sm hover:shadow-xl hover:shadow-blue-200/40"
+                >
+                  <div className="font-bold text-sm tracking-tight">{cat}</div>
+                </Link>
+              ))}
+              <Link 
+                href="/courses"
+                className="p-6 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-2xl border border-blue-100 transition-all text-center flex items-center justify-center font-bold text-sm"
+              >
+                View All {CATEGORIES.length} Categories
+              </Link>
             </div>
           </div>
         </section>

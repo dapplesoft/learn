@@ -49,7 +49,7 @@ export default function CoursePlayerPage() {
     const timer = setTimeout(() => {
       const currentUser = db.getCurrentUser();
       if (!currentUser) {
-        router.push('/login');
+        router.push('/');
         return;
       }
 
