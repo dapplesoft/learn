@@ -58,7 +58,6 @@ export default function FooterPublic() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-blue-50">
-              <li><Link href="/courses" className="hover:text-white transition-colors">All Courses</Link></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">Blog & Articles</Link></li>
               <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
               <li><Link href="/contact" className="hover:text-white transition-colors">Contact Support</Link></li>

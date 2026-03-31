@@ -40,12 +40,7 @@ export default function HeaderPublic() {
     router.push('/student-dashboard');
   };
 
-  const navLinks = [
-    { name: 'Courses', href: '/courses' },
-    { name: 'About', href: '/about' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Contact', href: '/contact' },
-  ];
+  const navLinks = [];
 
   return (
     <nav className="sticky top-0 z-50 bg-gradient-to-r from-blue-600 to-blue-400 border-b border-white/10 shadow-lg">

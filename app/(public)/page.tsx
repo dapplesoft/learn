@@ -16,7 +16,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setCourses(db.getCourses().filter(c => c.published).slice(0, 6));
+      setCourses(db.getCourses().filter(c => c.published));
       setBlogs(db.getBlogs().slice(0, 4));
     }, 0);
     return () => clearTimeout(timer);
@@ -63,13 +63,13 @@ export default function LandingPage() {
                 cloud engineering, and design. Start your journey today with expert-led content.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link
-                  href="/courses"
+                <button
+                  onClick={() => document.getElementById('courses-grid')?.scrollIntoView({ behavior: 'smooth' })}
                   className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold transition-all flex items-center justify-center space-x-2 shadow-lg shadow-blue-200"
                 >
-                  <span>Browse All Courses</span>
+                  <span>Start Learning Now</span>
                   <ArrowRight className="h-4 w-4" />
-                </Link>
+                </button>
                 <button
                   onClick={handleStudentLogin}
                   className="px-8 py-3.5 bg-white hover:bg-slate-50 text-slate-900 rounded-full font-bold transition-all border border-slate-200 flex items-center justify-center space-x-2"
@@ -92,10 +92,6 @@ export default function LandingPage() {
                     <LayoutGrid className="h-5 w-5" />
                     <span>Home</span>
                   </Link>
-                  <Link href="/courses" className="flex items-center space-x-3 p-2.5 rounded-xl text-slate-600 hover:bg-slate-50 font-medium text-sm transition-all">
-                    <BookOpen className="h-5 w-5" />
-                    <span>Courses</span>
-                  </Link>
                   <Link href="/blog" className="flex items-center space-x-3 p-2.5 rounded-xl text-slate-600 hover:bg-slate-50 font-medium text-sm transition-all">
                     <Trophy className="h-5 w-5" />
                     <span>Success Stories</span>
@@ -106,13 +102,12 @@ export default function LandingPage() {
                   <h3 className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Categories</h3>
                   <nav className="space-y-0.5">
                     {CATEGORIES.slice(0, 8).map((cat) => (
-                      <Link
+                      <button
                         key={cat}
-                        href={`/courses?category=${encodeURIComponent(cat)}`}
-                        className="flex items-center p-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 transition-all"
+                        className="w-full text-left flex items-center p-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 transition-all"
                       >
                         {cat}
-                      </Link>
+                      </button>
                     ))}
                   </nav>
                 </div>
@@ -139,7 +134,7 @@ export default function LandingPage() {
               </div>
 
               {/* Course Grid (YouTube Style) */}
-              <section className="mb-16">
+              <section id="courses-grid" className="mb-16">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-10">
                   {courses.map((course) => (
                     <Link key={course.id} href={`/courses/${course.id}`} className="group flex flex-col">
@@ -181,43 +176,6 @@ export default function LandingPage() {
                     </Link>
                   ))}
                 </div>
-                
-                <div className="mt-12 text-center">
-                  <Link 
-                    href="/courses" 
-                    className="inline-flex items-center space-x-2 text-sm font-bold text-blue-600 hover:text-blue-700"
-                  >
-                    <span>Explore all {INITIAL_COURSES.length} courses</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </section>
-
-              {/* Blog Section (YouTube Style "Posts") */}
-              <section className="pt-8 border-t border-slate-100">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-slate-900">Latest Updates</h2>
-                  <Link href="/blog" className="text-sm font-bold text-blue-600 hover:underline">View all</Link>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {blogs.map((blog) => (
-                    <Link key={blog.id} href={`/blog/${blog.id}`} className="group">
-                      <div className="aspect-square relative rounded-xl overflow-hidden mb-2 bg-slate-100">
-                        <Image 
-                          src={blog.image} 
-                          alt={blog.title} 
-                          fill 
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                          referrerPolicy="no-referrer"
-                        />
-                      </div>
-                      <h3 className="text-xs font-bold text-slate-900 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
-                        {blog.title}
-                      </h3>
-                      <p className="text-[10px] text-slate-500 mt-1">{blog.date}</p>
-                    </Link>
-                  ))}
-                </div>
               </section>
             </div>
           </div>
@@ -228,20 +186,13 @@ export default function LandingPage() {
             <h2 className="text-2xl font-bold text-slate-900 mb-6 px-2">Browse Categories</h2>
             <div className="flex overflow-x-auto pb-4 space-x-4 scrollbar-hide px-2">
               {CATEGORIES.slice(0, 10).map((cat) => (
-                <Link
+                <button
                   key={cat}
-                  href={`/courses?category=${encodeURIComponent(cat)}`}
                   className="flex-shrink-0 px-6 py-3 bg-white rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:border-blue-500 hover:text-blue-600 transition-all shadow-sm"
                 >
                   {cat}
-                </Link>
+                </button>
               ))}
-              <Link
-                href="/courses"
-                className="flex-shrink-0 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-blue-200"
-              >
-                View All
-              </Link>
             </div>
           </div>
         </section>
